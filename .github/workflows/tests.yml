@@ -38,8 +38,8 @@ jobs:
         npm install
 
         npm install -g @mapbox/node-pre-gyp
-        node-pre-gyp -target_platform=linux,darwin rebuild
-        node-pre-gyp -target_platform=linux,darwin package
+        node-pre-gyp --target_platform=linux rebuild
+        node-pre-gyp package
 
         ls -lh ~/build
 
