@@ -37,7 +37,7 @@ jobs:
         set -x
         npm install --build-from-source
 
-        npm install -g @mapbox/node-pre-gyp && node-pre-gyp unpublish package publish
+        npm install -g @mapbox/node-pre-gyp && node-pre-gyp rebuild
 
 #     - name: Run tests
 #       run: npm test
