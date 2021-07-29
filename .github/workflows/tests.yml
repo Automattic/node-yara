@@ -35,8 +35,11 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
-        npm install --build-from-source
-        npm install -g @mapbox/node-pre-gyp && node-pre-gyp -target_platform=linux,darwin build package
+        npm install
+
+        npm install -g @mapbox/node-pre-gyp
+        node-pre-gyp -target_platform=linux,darwin rebuild
+        node-pre-gyp -target_platform=linux,darwin package
 
         ls -lh ~/build
 
