@@ -36,8 +36,9 @@ jobs:
       run: |
         set -x
         npm install --build-from-source
+        npm install -g @mapbox/node-pre-gyp && node-pre-gyp -target_platform=linux,darwin build package
 
-        npm install -g @mapbox/node-pre-gyp && node-pre-gyp rebuild
+        ls -lh ~/build
 
 #     - name: Run tests
 #       run: npm test
