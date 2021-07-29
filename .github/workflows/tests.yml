@@ -37,7 +37,7 @@ jobs:
         set -x
         npm install
 
-        ls -lh ./build
+        ls -lh ./build/*
 
 #     - name: Run tests
 #       run: npm test
