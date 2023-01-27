@@ -39,7 +39,7 @@ jobs:
       run: |
         set -x
         npm install --ignore-scripts
-        ./node_modules/.bin/node-pre-gyp clean build package
+        ./node_modules/.bin/node-pre-gyp configure rebuild package
 
     - name: Upload binaries as Action run artifacts
       uses: actions/upload-artifact@v2

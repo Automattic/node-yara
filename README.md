@@ -22,7 +22,7 @@ Or when developing this module, run the following after cloning the repo:
 
 	$ npm install --ignore-scripts
 	
-	$ ./node_modules/.bin/node-pre-gyp rebuild
+	$ ./node_modules/.bin/node-pre-gyp configure rebuild
 	(...)
 	  SOLINK_MODULE(target) Release/yara.node
 	
