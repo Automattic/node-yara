@@ -15,6 +15,11 @@ This module is installed using [node package manager (npm)][npm]:
 
 	npm i --save "yara@npm:@automattic/yara@latest"
 
+Or when developing this module, run the following after cloning the repo:
+
+	npm ci --ignore-scripts
+	./node_modules/.bin/node-pre-gyp clean build package
+
 It is loaded using the `require()` function:
 
 	var yara = require("yara")
