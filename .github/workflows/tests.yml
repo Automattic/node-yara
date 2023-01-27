@@ -39,6 +39,7 @@ jobs:
       run: |
         set -x
         npm install --build-from-source
+        ./node_modules/.bin/node-pre-gyp clean build package
 
         ls -lh ./build/Release
         md5sum ./build/Release/yara.node || md5 ./build/Release/yara.node || true
