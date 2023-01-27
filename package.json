@@ -7,11 +7,20 @@
     "example": "example"
   },
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.10",
     "nan": "2.14.*",
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "test": "mocha test/*"
+    "test": "mocha test/*",
+    "install": "node-pre-gyp install --fallback-to-build"
+  },
+  "binary": {
+    "module_name": "node-yara",
+    "module_path": "./lib/binding/",
+    "host": "https://github.com/",
+    "remote_path": "/Automattic/node-yara/raw/master/binaries/{platform}/",
+    "package_name": "yara.tar.gz"
   },
   "contributors": [
     {
