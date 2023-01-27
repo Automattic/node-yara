@@ -20,7 +20,7 @@ Or when developing this module, run the following after cloning the repo:
 1. Clone the repo.
 2. Run:
 
-	$ npm ci --ignore-scripts
+	$ npm install --ignore-scripts
 	
 	$ ./node_modules/.bin/node-pre-gyp rebuild
 	(...)
