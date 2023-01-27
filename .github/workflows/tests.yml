@@ -38,7 +38,7 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
-        npm install --build-from-source
+        npm ci --ignore-scripts
         ./node_modules/.bin/node-pre-gyp clean build package
 
         ls -lh ./build/Release
