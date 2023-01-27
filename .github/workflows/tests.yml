@@ -38,13 +38,13 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
-        npm ci --ignore-scripts
+        npm install --ignore-scripts
         ./node_modules/.bin/node-pre-gyp clean build package
 
     - name: Upload binaries as Action run artifacts
       uses: actions/upload-artifact@v2
       with:
-        path: ./binaries/*.tar.gz
+        path: ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz
 
     - name: Run tests
       run: npm test
