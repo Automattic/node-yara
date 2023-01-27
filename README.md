@@ -31,6 +31,7 @@ Or when developing this module, run the following after cloning the repo:
 	node-pre-gyp info package Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.4.0-darwin-x64.tar.gz"
 	node-pre-gyp info ok 
 
+	$ mv build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
 
 3. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
 
