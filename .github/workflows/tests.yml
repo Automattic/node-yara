@@ -44,6 +44,7 @@ jobs:
     - name: Upload binaries as Action run artifacts
       uses: actions/upload-artifact@v2
       with:
+        name: yara-${{ matrix.os }}.tar.gz
         path: ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz
 
     - name: Run tests
