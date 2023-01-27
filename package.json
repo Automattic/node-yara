@@ -16,11 +16,11 @@
     "install": "node-pre-gyp install --fallback-to-build"
   },
   "binary": {
-    "module_name": "node-yara",
-    "module_path": "./lib/binding/",
+    "module_name": "yara",
+    "module_path": "./build/Release",
     "host": "https://github.com/",
-    "remote_path": "/Automattic/node-yara/raw/master/binaries/{platform}/",
-    "package_name": "yara.tar.gz"
+    "remote_path": "/Automattic/node-yara/raw/master/binaries/",
+    "package_name": "{module_name}-v{version}-{platform}-{arch}.tar.gz"
   },
   "contributors": [
     {
