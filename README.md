@@ -17,8 +17,22 @@ This module is installed using [node package manager (npm)][npm]:
 
 Or when developing this module, run the following after cloning the repo:
 
-	npm ci --ignore-scripts
-	./node_modules/.bin/node-pre-gyp clean build package
+1. Clone the repo.
+2. Run:
+
+	$ npm ci --ignore-scripts
+	
+	$ ./node_modules/.bin/node-pre-gyp rebuild
+	(...)
+	  SOLINK_MODULE(target) Release/yara.node
+	
+	$ ./node_modules/.bin/node-pre-gyp package
+	(...)
+	node-pre-gyp info package Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/darwin/yara.tar.gz"
+	node-pre-gyp info ok 
+
+
+3. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
 
 It is loaded using the `require()` function:
 
