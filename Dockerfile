@@ -22,5 +22,5 @@ RUN npm install --ignore-scripts
 COPY . .
 RUN ./node_modules/.bin/node-pre-gyp configure rebuild package
 
-RUN cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz /tmp/binaries
-RUN ls /tmp/binaries
+RUN cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz /tmp
+RUN ls -lh /tmp
