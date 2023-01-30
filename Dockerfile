@@ -6,6 +6,7 @@ RUN apt-get update -y && \
 		autoconf \
 		build-essential \
 		libmagic-dev \
+		libssl-dev \
 		libtool \
 		pkg-config \
 		python3
