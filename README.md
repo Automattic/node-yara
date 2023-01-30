@@ -20,20 +20,20 @@ Or when developing this module, run the following after cloning the repo:
 1. Clone the repo.
 2. Make sure that you're using the proper Node.js version by running `nvm use`.
 3. Run:
+```
+$ npm install --ignore-scripts
 
-	$ npm install --ignore-scripts
-	
-	$ ./node_modules/.bin/node-pre-gyp configure rebuild
-	(...)
-	  SOLINK_MODULE(target) Release/yara.node
-	
-	$ ./node_modules/.bin/node-pre-gyp package
-	(...)
-	node-pre-gyp info package Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.4.0-darwin-x64.tar.gz"
-	node-pre-gyp info ok 
+$ ./node_modules/.bin/node-pre-gyp configure rebuild
+(...)
+  SOLINK_MODULE(target) Release/yara.node
 
-	$ mv build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
+$ ./node_modules/.bin/node-pre-gyp package
+(...)
+node-pre-gyp info package Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.4.0-darwin-x64.tar.gz"
+node-pre-gyp info ok 
 
+$ mv build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
+```
 4. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
 
 It is loaded using the `require()` function:
