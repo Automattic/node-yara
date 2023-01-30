@@ -7,6 +7,7 @@ RUN apt-get update -y && \
 		build-essential \
 		libmagic-dev \
 		libtool \
+		pkg-config \
 		python3
 
 WORKDIR /opt/a8c/node-yara
