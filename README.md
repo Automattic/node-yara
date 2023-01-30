@@ -18,7 +18,8 @@ This module is installed using [node package manager (npm)][npm]:
 Or when developing this module, run the following after cloning the repo:
 
 1. Clone the repo.
-2. Run:
+2. Make sure that you're using the proper Node.js version by running `nvm use`.
+3. Run:
 
 	$ npm install --ignore-scripts
 	
@@ -33,7 +34,7 @@ Or when developing this module, run the following after cloning the repo:
 
 	$ mv build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
 
-3. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
+4. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
 
 It is loaded using the `require()` function:
 
