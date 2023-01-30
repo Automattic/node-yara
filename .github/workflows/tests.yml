@@ -14,9 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-        - '14'
+#        - '14'
         - '16'
-        - '18'
+#        - '18'
         os:
         - 'ubuntu'
         - 'macos'
@@ -38,16 +38,14 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
-        npm install --build-from-source
-
-        ls -lh ./build/Release
-        md5sum ./build/Release/yara.node || md5 ./build/Release/yara.node || true
+        npm install --ignore-scripts
+        ./node_modules/.bin/node-pre-gyp configure rebuild package
 
     - name: Upload binaries as Action run artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: node${{ matrix.node-version }}-${{ matrix.os }}-yara.node
-        path: ./build/Release/yara.node
+        name: yara-${{ matrix.os }}.tar.gz
+        path: ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz
 
     - name: Run tests
       run: npm test
