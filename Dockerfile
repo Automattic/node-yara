@@ -5,6 +5,7 @@ RUN apt-get update -y && \
 	apt-get install -y \
 		autoconf \
 		build-essential \
+		curl \
 		libmagic-dev \
 		libssl-dev \
 		libtool \
@@ -20,7 +21,13 @@ RUN npm install --ignore-scripts
 
 # now, let's copy the rest of the code
 COPY . .
-RUN ./node_modules/.bin/node-pre-gyp configure rebuild package
 
-RUN cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz /tmp
-RUN ls -lh /tmp
+# we do not need root anymore
+RUN chown -R nobody:nogroup ${HOME}
+USER nobody
+
+RUN npx node-pre-gyp configure rebuild
+
+RUN npx node-pre-gyp package && \
+	cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz /tmp && \
+	ls -lh /tmp
