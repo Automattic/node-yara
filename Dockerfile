@@ -10,7 +10,8 @@ RUN apt-get update -y && \
 		libssl-dev \
 		libtool \
 		pkg-config \
-		python3
+		python3 \
+		time
 
 WORKDIR /opt/a8c/node-yara
 ENV HOME /opt/a8c/node-yara
@@ -27,7 +28,7 @@ RUN chown -R nobody:nogroup ${HOME}
 USER nobody
 
 # build and test it
-RUN npx node-pre-gyp configure rebuild && \
+RUN time -p npx node-pre-gyp configure rebuild && \
 	npm t
 
 # prepare a tar.gz package and copy it to the binaries/ directory
