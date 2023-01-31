@@ -26,9 +26,11 @@ COPY . .
 RUN chown -R nobody:nogroup ${HOME}
 USER nobody
 
+# build and test it
 RUN npx node-pre-gyp configure rebuild && \
 	npm t
 
+# prepare a tar.gz package and copy it to the binaries/ directory
 RUN npx node-pre-gyp package && \
-	cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz /tmp && \
-	ls -lh /tmp
+	cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries && \
+	ls -lh ./binaries
