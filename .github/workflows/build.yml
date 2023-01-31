@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  # we need to use the node-yara binary on Debian 10.x machines
+  # We need to use the node-yara binary on Debian 10.x machines
   # hence we're using the container to build it
   build-debian:
     strategy:
