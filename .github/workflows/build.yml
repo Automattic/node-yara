@@ -40,7 +40,17 @@ jobs:
 
         # copy it to the repository clone and see if there's a difference
         cp /tmp/yara-* ./binaries
-        git diff
+        git status  --porcelain
+
+    # By default, the commit is made in the name of "GitHub Actions"
+    # and co-authored by the user that made the last commit.
+    # https://github.com/marketplace/actions/git-auto-commit
+    - name: Commit the changes to the binary files
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
+        commit_message: Commit the binary package changes for Linux / Node.js ${{ matrix.node-version }}
+        file_pattern: './binaries/*.tar.gz'
 
 
   build-macos:
@@ -69,9 +79,12 @@ jobs:
       run: |
         set -x
         npm install --ignore-scripts
-        ./node_modules/.bin/node-pre-gyp configure rebuild package
+        time -p npx node-pre-gyp configure rebuild
+
+        npx node-pre-gyp configure package
+
         cp ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
-        git diff
+        git status  --porcelain
 
     - name: Run tests
       run: npm test
@@ -83,5 +96,5 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
-        commit_message: Commit the binary package changes
+        commit_message: Commit the binary package changes for MacOS / Node.js ${{ matrix.node-version }}
         file_pattern: './binaries/*.tar.gz'
