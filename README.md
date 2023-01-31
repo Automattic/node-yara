@@ -5,7 +5,7 @@ This module implements [YARA][yara] bindings for [Node.js][nodejs].
 
 **This module is supported on Linux and MacOS (using homebrew) platforms only**
 
-This module is built using libyara 4.0.
+This module is built [using libyara 4.2.3](https://github.com/Automattic/node-yara/blob/master/Makefile#L14).
 
 This module is installed using [node package manager (npm)][npm]:
 
