@@ -7,6 +7,10 @@ on:
     branches: [ master ]
   pull_request:
 
+# allow these jobs to commit to the repository
+permissions:
+  contents: write
+
 jobs:
   # we need to use the node-yara binary on Debian 10.x machines
   # hence we're using the container to build it
@@ -71,3 +75,13 @@ jobs:
 
     - name: Run tests
       run: npm test
+
+    # By default, the commit is made in the name of "GitHub Actions"
+    # and co-authored by the user that made the last commit.
+    # https://github.com/marketplace/actions/git-auto-commit
+    - name: Commit the changes to the binary files
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
+        commit_message: Commit the binary package changes
+        file_pattern: './binaries/*.tar.gz'
