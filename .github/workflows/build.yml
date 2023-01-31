@@ -1,0 +1,73 @@
+# Here we build the yara.node binary, package it and copy it to the repository.
+# Both MacOS and Linux (Debian-based) versions are built here.
+name: Build the binary
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  # we need to use the node-yara binary on Debian 10.x machines
+  # hence we're using the container to build it
+  build-debian:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+#        - '14'
+        - '16'
+#        - '18'
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build binaries inside the container
+      run: |
+        set -x
+
+        # build inside the container and copy the package to the host
+        docker build -t yara/debian .
+        docker images
+        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-*-linux-*.tar.gz /tmp
+        ls -lh /tmp/yara-*
+
+        # copy it to the repository clone and see if there's a difference
+        cp /tmp/yara-* ./binaries
+        git diff
+
+
+  build-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+#        - '14'
+        - '16'
+#        - '18'
+
+    runs-on: macos-12
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup MacOs
+      run: brew install autoconf automake libmagic
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@master
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build binaries with node-pre-gyp
+      run: |
+        set -x
+        npm install --ignore-scripts
+        ./node_modules/.bin/node-pre-gyp configure rebuild package
+        cp ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
+        git diff
+
+    - name: Run tests
+      run: npm test
