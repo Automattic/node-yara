@@ -1,0 +1,6 @@
+Dockerfile
+README.md
+build/
+deps/yara-*
+example/
+node_modules/
