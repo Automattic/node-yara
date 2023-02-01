@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Build binaries inside the container
       run: |
@@ -66,7 +66,7 @@ jobs:
     runs-on: macos-12
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup MacOs
       run: brew install autoconf automake libmagic
