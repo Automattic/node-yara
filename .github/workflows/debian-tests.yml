@@ -1,0 +1,42 @@
+# Check if the binaries we have in this repository actually work when "npm i" is run
+name: Install and test the binary
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+#        - '14'
+        - '16'
+#        - '18'
+        os:
+        - 'ubuntu-22.04'
+        container: [ 'node:16.16-buster-slim', 'node:16.16-bullseye-slim' ]
+
+    runs-on: ${{ matrix.os }}
+
+    container:
+      image: ${{ matrix.container }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@master
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Setup dependencies 
+      run: apt update && apt install libmagic-dev -y
+
+    - name: Install the package
+      run: npm install
+
+    - name: Run the tests
+      run: npm test
