@@ -5,7 +5,7 @@ This module implements [YARA][yara] bindings for [Node.js][nodejs].
 
 **This module is supported on Linux and MacOS (using homebrew) platforms only**
 
-This module is built [using libyara 4.2.3](https://github.com/Automattic/node-yara/blob/master/Makefile#L14).
+This module is built [using libyara 4.2.3](https://github.com/Automattic/node-yara/blob/master/Makefile#L14) and is statically linked against [libmagic](https://linux.die.net/man/3/libmagic).
 
 This module is installed using [node package manager (npm)][npm]:
 
@@ -15,11 +15,17 @@ This module is installed using [node package manager (npm)][npm]:
 
 	npm i --save "yara@npm:@automattic/yara@latest"
 
+# Developing
+
 Or when developing this module, run the following after cloning the repo:
 
 1. Clone the repo.
-2. Make sure that you're using the proper Node.js version by running `nvm use`.
-3. Run:
+2. Make sure the dependencies are installed.
+
+For Linux see the `Dockerfile`. For MacOS run `brew install autoconf automake libmagic`.
+
+3. Make sure that you're using the proper Node.js version by running `nvm use`.
+4. Run:
 ```
 $ npm install --ignore-scripts
 
@@ -34,7 +40,7 @@ node-pre-gyp info ok
 
 $ mv build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
 ```
-4. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
+5. Now you have a new `yara.tar.gz` archives in the `binaries` directory.
 
 It is loaded using the `require()` function:
 
