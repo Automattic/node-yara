@@ -13,7 +13,7 @@
         }],
         ['OS == "mac"', {
           "copies": [{
-            "files": [ "/usr/local/Cellar/libmagic/5.44/lib/libmagic.a" ],
+            "files": [ "/usr/local/opt/libmagic/lib/libmagic.a" ],
             "destination": "build/"
           }],
         }],
