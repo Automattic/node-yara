@@ -3,10 +3,21 @@
     {
       "target_name": "action_before_build",
       "type": "none",
-      "copies": [{
-        "files": [ "/usr/lib/x86_64-linux-gnu/libmagic.a" ],
-        "destination": "build/"
-      }]
+      "copies": [],
+      "conditions": [
+        ['OS == "linux"', {
+          "copies": [{
+            "files": [ "/usr/lib/x86_64-linux-gnu/libmagic.a" ],
+            "destination": "build/"
+          }],
+        }],
+        ['OS == "mac"', {
+          "copies": [{
+            "files": [ "/usr/local/Cellar/libmagic/5.44/lib/libmagic.a" ],
+            "destination": "build/"
+          }],
+        }],
+      ],
     },
     {
       "target_name": "yara",
