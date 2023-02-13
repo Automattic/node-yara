@@ -1,6 +1,14 @@
 {
   "targets": [
     {
+      "target_name": "action_before_build",
+      "type": "none",
+      "copies": [{
+        "files": [ "/usr/lib/x86_64-linux-gnu/libmagic.a" ],
+        "destination": "build/"
+      }]
+    },
+    {
       "target_name": "yara",
       "sources": [
         "src/yara.cc"
@@ -14,7 +22,7 @@
         "./build/yara/include"
       ],
       "libraries": [
-        "/usr/lib/x86_64-linux-gnu/libmagic.a",
+        "../build/libmagic.a",
         "../build/yara/lib/libyara.a"
       ],
       "conditions": [
