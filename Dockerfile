@@ -31,6 +31,9 @@ USER nobody
 RUN time -p npx node-pre-gyp configure rebuild && \
 	npm t
 
+# see dynamic dependencies
+RUN ldd build/Release/yara.node
+
 # prepare a tar.gz package and copy it to the binaries/ directory
 RUN npx node-pre-gyp package && \
 	cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries && \
