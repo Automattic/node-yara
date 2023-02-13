@@ -46,7 +46,7 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      if: false  # for now the build process does not create a repeatable artifacts, hence each build would create a "new" commit -> disabling for now
+      # if: false  # for now the build process does not create a repeatable artifacts, hence each build would create a "new" commit -> disabling for now
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
@@ -96,7 +96,7 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      if: false  # for now the build process does not create a repeatable artifacts, hence each build would create a "new" commit -> disabling for now
+      # if: false  # for now the build process does not create a repeatable artifacts, hence each build would create a "new" commit -> disabling for now
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
