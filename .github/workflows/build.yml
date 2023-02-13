@@ -82,6 +82,8 @@ jobs:
         npm install --ignore-scripts
         time -p npx node-pre-gyp configure rebuild
 
+        otool -L build/Release/yara.node
+
         npx node-pre-gyp configure package
 
         cp ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
