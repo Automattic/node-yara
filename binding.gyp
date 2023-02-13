@@ -14,7 +14,7 @@
         "./build/yara/include"
       ],
       "libraries": [
-        "/usr/lib/x86_64-linux-gnu/libmagic.a",
+        "-Lmagic",
         "../build/yara/lib/libyara.a"
       ],
       "conditions": [
