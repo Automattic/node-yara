@@ -32,9 +32,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Setup dependencies 
-      run: apt update && apt install libmagic-dev -y
-
     - name: Install the package
       run: npm install
 
