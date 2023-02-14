@@ -17,7 +17,7 @@ jobs:
 #        - '18'
         os:
         - 'ubuntu-22.04'
-        container: [ 'node:16.16-buster-slim', 'node:16.16-bullseye-slim' ]
+        container: [ 'node:16.16-buster-slim', 'node:16.16-bullseye-slim', 'debian:unstable-slim' ]
 
     runs-on: ${{ matrix.os }}
 
