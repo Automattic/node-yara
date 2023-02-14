@@ -13,21 +13,29 @@ jobs:
       matrix:
         node-version:
 #        - '14'
-        - '16'
+        - '16.16'
 #        - '18'
-        os:
-        - 'ubuntu-22.04'
-        - 'macos-12'
+        container:
+        - 'node:16.16-buster-slim'
+        - 'node:16.16-bullseye-slim'
+        - 'debian:unstable-slim'
 
-    runs-on: ${{ matrix.os }}
+    runs-on: 'ubuntu-22.04'  # the host system for the Action to be run, tests will be run inside the containers defined above
+
+    container:
+      image: ${{ matrix.container }}
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
+      if: matrix.container == 'debian:unstable-slim'  # node:16.16 containers already have Node.js installed, obviously :)
       uses: actions/setup-node@master
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Print distro and Node.js version information
+      run: cat /etc/os-release && node -v && npm -v
 
     - name: Install the package
       run: npm install
