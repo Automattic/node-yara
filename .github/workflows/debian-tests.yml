@@ -13,7 +13,7 @@ jobs:
       matrix:
         node-version:
 #        - '14'
-        - '16'
+        - '16.16'
 #        - '18'
         os:
         - 'ubuntu-22.04'
@@ -28,12 +28,13 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
+      if: matrix.container == 'debian:unstable-slim'  # node:16.16 containers already have Node.js installed, obviously :)
       uses: actions/setup-node@master
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Print distro and Node.js version information
-      run: cat /etc/os-release && node -v
+      run: cat /etc/os-release && node -v && npm -v
 
     - name: Install the package
       run: npm install
