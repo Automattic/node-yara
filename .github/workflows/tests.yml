@@ -29,10 +29,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Setup MacOs
-      if: matrix.os == 'macos-12'
-      run: brew install autoconf automake libmagic
-
     - name: Install the package
       run: npm install
 
