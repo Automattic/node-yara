@@ -32,6 +32,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Print distro and Node.js version information
+      run: cat /etc/os-release && node -v
+
     - name: Install the package
       run: npm install
 
