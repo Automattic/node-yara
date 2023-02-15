@@ -7,6 +7,10 @@ on:
     branches: [ master ]
   pull_request:
 
+  # we're going to build and commit fresh binaries when a new release is published
+  release:
+    types: [created]
+
 # allow these jobs to commit to the repository
 permissions:
   contents: write
@@ -46,7 +50,8 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      if: false  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      # if: false  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
@@ -96,7 +101,8 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      if: false  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      # if: false  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         ref: ${{ github.head_ref }}  # https://github.com/marketplace/actions/git-auto-commit#checkout-the-correct-branch
