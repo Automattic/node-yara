@@ -31,15 +31,19 @@ jobs:
     - name: Build binaries inside the container
       run: |
         set -x
+        
+        # what's the package version?
+        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
+        export PACKAGE_VERSION=$(jq -r .version package.json)
 
         # build inside the container and copy the package to the host
         docker build -t yara/debian .
         docker images
-        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-*-linux-*.tar.gz /tmp
-        ls -lh /tmp/yara-*
+        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64.tar.gz /tmp
+        ls -lh /tmp/yara-v${PACKAGE_VERSION}-*
 
         # copy it to the repository clone and see if there's a difference
-        cp /tmp/yara-* ./binaries
+        cp /tmp/yara-v${PACKAGE_VERSION}-* ./binaries
         git status  --porcelain
 
     # By default, the commit is made in the name of "GitHub Actions"
