@@ -4,10 +4,13 @@
       "target_name": "action_before_build",
       "type": "none",
       "copies": [],
+      "variables": {
+        'architecture': '<!(uname -m)'
+      },
       "conditions": [
         ['OS == "linux"', {
           "copies": [{
-            "files": [ "/usr/lib/x86_64-linux-gnu/libmagic.a" ],
+            "files": [ "/usr/lib/<(architecture)-linux-gnu/libmagic.a" ],
             "destination": "build/"
           }],
         }],
