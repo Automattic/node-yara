@@ -50,7 +50,7 @@ jobs:
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
 
-        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js v$(node -v) (ABI ${ABI}) ..."
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
 
         # build inside the container (pass the required Node.js version there) and copy the package to the host
         docker build --build-arg NODEJS=${{ matrix.node-version }} -t yara/debian .
@@ -109,7 +109,7 @@ jobs:
 
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
-        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js v$(node -v) (ABI ${ABI}) ..."
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
 
         npm install --ignore-scripts
         time -p npx node-pre-gyp configure rebuild
@@ -124,6 +124,8 @@ jobs:
     - name: Run tests
       run: npm test
 
+    # TODO: publish as the release artifacts
+    #
     # By default, the commit is made in the name of "GitHub Actions"
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
