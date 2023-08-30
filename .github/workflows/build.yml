@@ -35,7 +35,8 @@ jobs:
     - name: Build binaries inside the container
       run: |
         set -x
-        
+        node -v
+
         # what's the package version?
         # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
         export PACKAGE_VERSION=$(jq -r .version package.json)
