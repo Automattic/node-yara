@@ -102,6 +102,15 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
+
+        # what's the package version?
+        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
+        export PACKAGE_VERSION=$(jq -r .version package.json)
+
+        # what's the Node.js version?
+        export ABI=$(node --eval 'console.log(process.versions.modules)')
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js v$(node -v) (ABI ${ABI}) ..."
+
         npm install --ignore-scripts
         time -p npx node-pre-gyp configure rebuild
 
