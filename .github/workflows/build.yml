@@ -44,8 +44,8 @@ jobs:
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
 
-        # build inside the container and copy the package to the host
-        docker build -t yara/debian .
+        # build inside the container (pass the required Node.js version there) and copy the package to the host
+        docker build --build-arg NODEJS=${{ matrix.node-version }} -t yara/debian .
         docker images
 
         # e.g. yara-v2.5.0-linux-x64-node-v93.tar.gz
