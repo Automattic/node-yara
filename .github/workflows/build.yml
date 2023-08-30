@@ -46,7 +46,9 @@ jobs:
         # build inside the container and copy the package to the host
         docker build -t yara/debian .
         docker images
-        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64-node${ABI}.tar.gz /tmp
+
+        # e.g. yara-v2.5.0-linux-x64-node-v93.tar.gz
+        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64-node-v${ABI}.tar.gz /tmp
         ls -lh /tmp/yara-v${PACKAGE_VERSION}-*
 
         # copy it to the repository clone and see if there's a difference
