@@ -32,6 +32,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@master
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
+
     - name: Build binaries inside the container
       run: |
         set -x
@@ -43,6 +49,8 @@ jobs:
 
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
+
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js v$(node -v) (ABI ${ABI}) ..."
 
         # build inside the container (pass the required Node.js version there) and copy the package to the host
         docker build --build-arg NODEJS=${{ matrix.node-version }} -t yara/debian .
