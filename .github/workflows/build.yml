@@ -23,9 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-#        - '14'
         - '16'
-#        - '18'
+        - '18'
+        - '20'
 
     runs-on: ubuntu-22.04
 
@@ -68,9 +68,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-#        - '14'
         - '16'
-#        - '18'
+        - '18'
+        - '20'
 
     runs-on: macos-12
 
