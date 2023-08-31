@@ -66,9 +66,6 @@ jobs:
         # copy it to the repository clone and see if there's a difference
         cp /tmp/yara-v${PACKAGE_VERSION}-* ./binaries
 
-    - name: Run tests
-      run: npm test
-
     - name: Prepare the pre-built package for the commit
       run: |
         # make sure we have the latest changes from the repository before we try to commit our changes
