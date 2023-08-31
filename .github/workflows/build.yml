@@ -23,27 +23,41 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-#        - '14'
         - '16'
-#        - '18'
+        - '18'
+        - '20'
 
     runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
 
+    # https://github.com/actions/setup-node
+    - name: Install Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@master
+      with:
+        node-version: ${{ matrix.node-version }}
+
     - name: Build binaries inside the container
       run: |
         set -x
-        
+        node -v
+
         # what's the package version?
         # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
         export PACKAGE_VERSION=$(jq -r .version package.json)
 
-        # build inside the container and copy the package to the host
-        docker build -t yara/debian .
+        # what's the Node.js version?
+        export ABI=$(node --eval 'console.log(process.versions.modules)')
+
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
+
+        # build inside the container (pass the required Node.js version there) and copy the package to the host
+        docker build --build-arg NODEJS=${{ matrix.node-version }} -t yara/debian .
         docker images
-        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64.tar.gz /tmp
+
+        # e.g. yara-v2.5.0-linux-x64-node-v93.tar.gz
+        docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64-node-v${ABI}.tar.gz /tmp
         ls -lh /tmp/yara-v${PACKAGE_VERSION}-*
 
         # copy it to the repository clone and see if there's a difference
@@ -68,9 +82,9 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-#        - '14'
         - '16'
-#        - '18'
+        - '18'
+        - '20'
 
     runs-on: macos-12
 
@@ -88,6 +102,15 @@ jobs:
     - name: Build binaries with node-pre-gyp
       run: |
         set -x
+
+        # what's the package version?
+        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
+        export PACKAGE_VERSION=$(jq -r .version package.json)
+
+        # what's the Node.js version?
+        export ABI=$(node --eval 'console.log(process.versions.modules)')
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
+
         npm install --ignore-scripts
         time -p npx node-pre-gyp configure rebuild
 
@@ -101,6 +124,8 @@ jobs:
     - name: Run tests
       run: npm test
 
+    # TODO: publish as the release artifacts
+    #
     # By default, the commit is made in the name of "GitHub Actions"
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit

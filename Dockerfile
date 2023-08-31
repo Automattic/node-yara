@@ -1,5 +1,6 @@
 # this container is used to build binaries for Debian 10 (aka oldstable)
-FROM node:16.16-buster-slim
+ARG NODEJS=16.16
+FROM node:$NODEJS-buster-slim
 
 RUN apt-get update -y && \
 	apt-get install -y \
