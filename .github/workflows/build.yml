@@ -47,7 +47,7 @@ jobs:
         node -v
 
         # what's the package version?
-        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
+        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.6.0-beta.1-linux-x64-node-v93.tar.gz"
         export PACKAGE_VERSION=$(jq -r .version package.json)
 
         # what's the Node.js version?
@@ -63,6 +63,8 @@ jobs:
         docker run --rm --volume /tmp:/tmp yara/debian cp ./binaries/yara-v${PACKAGE_VERSION}-linux-x64-node-v${ABI}.tar.gz /tmp
         ls -lh /tmp/yara-v${PACKAGE_VERSION}-*
 
+    - name: Prepare the pre-built package for the commit
+      run: |
         # make sure we have the latest changes from the repository before we try to commit our changes
         git pull --rebase
 
@@ -112,7 +114,7 @@ jobs:
         set -x
 
         # what's the package version?
-        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.5.0-linux-x64.tar.gz"
+        # e.g.  Binary staged at "build/stage/Automattic/node-yara/raw/master/binaries/yara-v2.6.0-beta.1-darwin-x64-node-v93.tar.gz"
         export PACKAGE_VERSION=$(jq -r .version package.json)
 
         # what's the Node.js version?
@@ -126,6 +128,12 @@ jobs:
 
         npx node-pre-gyp configure package
 
+    - name: Prepare the pre-built package for the commit
+      run: |
+        # make sure we have the latest changes from the repository before we try to commit our changes
+        git pull --rebase
+
+        # copy it to the repository clone and see if there's a difference
         cp ./build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries
         git status  --porcelain
 
