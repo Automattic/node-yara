@@ -69,7 +69,7 @@ jobs:
     - name: Prepare the pre-built package for the commit
       run: |
         # make sure we have the latest changes from the repository before we try to commit our changes
-        git stash; git pull --rebase; git stash pop
+        git stash; git pull --rebase; git stash pop; true
 
         # see if there's a difference
         git status  --porcelain
@@ -139,7 +139,7 @@ jobs:
     - name: Prepare the pre-built package for the commit
       run: |
         # make sure we have the latest changes from the repository before we try to commit our changes
-        git stash; git pull --rebase; git stash pop
+        git stash; git pull --rebase; git stash pop; true
 
         # see if there's a difference
         git status  --porcelain
