@@ -26,7 +26,7 @@ jobs:
       image: ${{ matrix.container }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
       if: matrix.container == 'debian:unstable-slim'  # node:16.16 containers already have Node.js installed, obviously :)

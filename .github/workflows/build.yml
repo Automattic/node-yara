@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
         ref: ${{ github.head_ref }}
@@ -98,7 +98,7 @@ jobs:
     runs-on: macos-12
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
         ref: ${{ github.head_ref }}
