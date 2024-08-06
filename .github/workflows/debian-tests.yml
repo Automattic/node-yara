@@ -12,12 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-#        - '14'
-        - '16.16'
-#        - '18'
+        - '18'
         container:
-        - 'node:16.16-buster-slim'
-        - 'node:16.16-bullseye-slim'
+        - 'node:18-buster-slim'
+        - 'node:18-bullseye-slim'
         - 'debian:unstable-slim'
 
     runs-on: 'ubuntu-22.04'  # the host system for the Action to be run, tests will be run inside the containers defined above
