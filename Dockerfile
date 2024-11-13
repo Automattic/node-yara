@@ -1,6 +1,7 @@
-# this container is used to build binaries for Debian 10 (aka oldstable)
+# This container is used to build binaries for Debian 11 (aka stable)
+# https://hub.docker.com/_/node/
 ARG NODEJS=16.16
-FROM node:$NODEJS-buster-slim
+FROM node:$NODEJS-bullseye-slim
 
 RUN apt-get update -y && \
 	apt-get install -y \
