@@ -1,7 +1,6 @@
-# This container is used to build binaries for Debian 11 (aka stable)
-# https://hub.docker.com/_/node/
-ARG NODEJS=16.16
-FROM node:$NODEJS-bullseye-slim
+# This container is used to build binaries for Debian 10 (aka buster)
+ARG NODEJS=18.18
+FROM debian:buster-slim
 
 RUN apt-get update -y && \
 	apt-get install -y \
@@ -14,6 +13,32 @@ RUN apt-get update -y && \
 		pkg-config \
 		python3 \
 		time
+
+# install Node.js via nvm
+# https://github.com/nvm-sh/nvm#install--update-script
+#
+# we want to have repeatable builds independented from Debian updating their Node.js packages
+ENV NODE_VERSION=${NODEJS}
+ENV NVM_VERSION=0.40.1
+ENV NVM_DIR /root/.nvm
+
+RUN echo ">> Installing Node.js v${NODE_VERSION} ..."
+
+# copy the binaries to the shared place and clean up the things
+RUN curl --fail --location --retry 3 --retry-delay 5 \
+    https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh | bash && \
+    echo "${NODE_VERSION}" > .nvmrc && \
+    . ${NVM_DIR}/nvm.sh && \
+    nvm install && \
+    echo "Copying Node.js binaries to /usr/local/bin ..." && \
+    mv -v ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/* /usr/local/bin && \
+    mv -v ${NVM_DIR}/versions/node/v${NODE_VERSION}/lib/* /usr/local/lib && \
+    echo "Cleaning up ..." && \
+    rm -rf ${NVM_DIR}
+
+RUN node -v && \
+    npm -v && \
+    env
 
 WORKDIR /opt/a8c/node-yara
 ENV HOME /opt/a8c/node-yara
