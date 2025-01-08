@@ -1,7 +1,9 @@
 # This container is used to build binaries for Debian 10 (aka buster)
 ARG DEBIAN_RELEASE=buster
-FROM debian:$DEBIAN_RELEASE-slim
-ARG NODEJS=18.18
+
+# The "python" base image is used to get a more up-to-date Python (buster ships with Python 3.7)
+FROM python:3.9-slim-$DEBIAN_RELEASE
+ARG NODEJS=22
 
 RUN apt-get update -y && \
 	apt-get install -y \
@@ -12,7 +14,6 @@ RUN apt-get update -y && \
 		libssl-dev \
 		libtool \
 		pkg-config \
-		python3 \
 		time
 
 # install Node.js via nvm
@@ -40,6 +41,7 @@ RUN curl --fail --location --retry 3 --retry-delay 5 \
 
 RUN node -v && \
     npm -v && \
+    python3 --version && \
     env
 
 WORKDIR /opt/a8c/node-yara
