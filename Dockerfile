@@ -30,7 +30,12 @@ RUN curl --fail --location --retry 3 --retry-delay 5 \
     echo "${NODE_VERSION}" > .nvmrc && \
     . ${NVM_DIR}/nvm.sh && \
     nvm install && \
-    ls -lh ${NVM_DIR}/versions/node
+    ls -lh ${NVM_DIR}/versions/node && \
+    echo "Copying Node.js binaries to /usr/local/bin ..." && \
+    cp -r ${NVM_DIR}/versions/node/$(nvm current)/bin/* /usr/local/bin && \
+    cp -r ${NVM_DIR}/versions/node/$(nvm current)/lib/* /usr/local/lib && \
+    echo "Cleaning up ..." && \
+    rm -rf ${NVM_DIR}
 
 RUN node -v && \
     npm -v && \
