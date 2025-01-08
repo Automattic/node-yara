@@ -16,8 +16,6 @@ permissions:
   contents: write
 
 jobs:
-  # We need to use the node-yara binary on Debian 10.x machines
-  # hence we're using the container to build it
   build-debian:
     strategy:
       fail-fast: false
@@ -29,6 +27,11 @@ jobs:
 
     # https://docs.github.com/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#choosing-github-hosted-runners
     runs-on: ubuntu-22.04
+
+    # We need to use the node-yara binary on Debian 10.x machines
+    # hence we're using the container to build it
+    container:
+      image: 'debian:buster-slim'
 
     steps:
     - uses: actions/checkout@v4
@@ -160,8 +163,8 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      # if: true  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
-      if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
+      if: true  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      # if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: Commit the binary package changes for MacOS / Node.js ${{ matrix.node-version }}
