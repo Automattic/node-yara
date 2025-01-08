@@ -34,3 +34,10 @@ up to date, audited 119 packages in 4s
 
 found 0 vulnerabilities
 ```
+
+## Node.js ABI versions
+
+* Node.js 16.x - `v93`
+* Node.js 18.x - `v108`
+* Node.js 20.x - `v115`
+* Node.js 22.x - `v127`
