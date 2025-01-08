@@ -1,5 +1,7 @@
 
 # yara
+[![Install and test the binary](https://github.com/Automattic/node-yara/actions/workflows/tests.yml/badge.svg)](https://github.com/Automattic/node-yara/actions/workflows/tests.yml)
+[![Build the binary](https://github.com/Automattic/node-yara/actions/workflows/build.yml/badge.svg)](https://github.com/Automattic/node-yara/actions/workflows/build.yml)
 
 This module implements [YARA][yara] bindings for [Node.js][nodejs].
 
