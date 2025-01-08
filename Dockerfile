@@ -19,7 +19,7 @@ RUN apt-get update -y && \
 #
 # we want to have repeatable builds independented from Debian updating their Node.js packages
 ENV NODE_VERSION=${NODEJS}
-ENV NVM_VERSION=0.39.6
+ENV NVM_VERSION=0.40.1
 ENV NVM_DIR /root/.nvm
 
 RUN echo ">> Installing Node.js v${NODE_VERSION} ..."
