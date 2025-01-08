@@ -1,6 +1,6 @@
 # This container is used to build binaries for Debian 10 (aka buster)
-ARG NODEJS=18.18
 FROM debian:buster-slim
+ARG NODEJS=18.18
 
 RUN apt-get update -y && \
 	apt-get install -y \
