@@ -19,7 +19,7 @@ RUN apt-get update -y && \
 #
 # we want to have repeatable builds independented from Debian updating their Node.js packages
 ENV NODE_VERSION=${NODEJS}
-ENV NVM_VERSION=0.40.1
+ENV NVM_VERSION=0.39.6
 ENV NVM_DIR /root/.nvm
 
 RUN echo ">> Installing Node.js v${NODE_VERSION} ..."
@@ -30,6 +30,7 @@ RUN curl --fail --location --retry 3 --retry-delay 5 \
     echo "${NODE_VERSION}" > .nvmrc && \
     . ${NVM_DIR}/nvm.sh && \
     nvm install && \
+    ls -lh ${NVM_DIR}/versions/node/* && \
     echo "Copying Node.js binaries to /usr/local/bin ..." && \
     mv -v ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/* /usr/local/bin && \
     mv -v ${NVM_DIR}/versions/node/v${NODE_VERSION}/lib/* /usr/local/lib && \
