@@ -115,7 +115,7 @@ jobs:
     - name: Set up dependencies via brew
       run: |
         set -x
-        brew install autoconf automake libmagic
+        brew install autoconf automake libmagic libtool
         brew ls libmagic | grep libmagic.a
 
     # refer to the binding.gyp file to see where we expect libmagic.a to be located
