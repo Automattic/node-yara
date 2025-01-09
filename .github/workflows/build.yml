@@ -109,20 +109,73 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
-    # note that brew install path varies between arm and x64 platforms
-    # /usr/local/Cellar/libmagic/5.46/lib/libmagic.a
-    # /opt/homebrew/Cellar/libmagic/5.46/lib/libmagic.a
-    - name: Set up dependencies via brew
+    # note that brew install linked path varies between arm and x64 platforms
+    # /usr/local/opt/libmagic for x64
+    # /opt/homebrew/opt/libmagic for arm64
+    - name: Set architecture-specific variables
+      id: set-arch
       run: |
-        set -x
-        brew install autoconf automake libmagic libtool
-        brew ls libmagic | grep libmagic.a
+        ARCH=$(uname -m)
+        echo "Architecture: $ARCH"
+        if [ "$ARCH" = "arm64" ]; then
+          echo "brew_path=/opt/homebrew" >> $GITHUB_OUTPUT
+          echo "Running on ARM64 (Apple Silicon)"
+        else
+          echo "brew_path=/usr/local" >> $GITHUB_OUTPUT
+          echo "Running on x64 (Intel)"
+        fi
 
-    # refer to the binding.gyp file to see where we expect libmagic.a to be located
-    - name: Symlink the libmagic.a file
+    - name: Setup build env
       run: |
-        sudo mkdir -pv /usr/local/opt/libmagic/lib/
-        sudo ln -sv $(brew ls libmagic | grep libmagic.a) /usr/local/opt/libmagic/lib/libmagic.a || true
+        BREW_PATH="${{ steps.set-arch.outputs.brew_path }}"
+        
+        # Install deps
+        brew install \
+          automake \
+          autoconf \
+          pkg-config \
+          libtool \
+          libmagic \
+          openssl
+
+        # Create compatibility symlinks for x64 paths when on arm64
+        if [ "$(uname -m)" = "arm64" ]; then
+          sudo mkdir -p /usr/local/opt/libmagic/{lib,include}
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.a /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.dylib /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.1.dylib /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/include/magic.h /usr/local/opt/libmagic/include/
+        fi
+
+        # Set up env vars
+        echo "PKG_CONFIG_PATH=$BREW_PATH/opt/libmagic/lib/pkgconfig:$BREW_PATH/opt/openssl/lib/pkgconfig" >> $GITHUB_ENV
+        echo "CPATH=$BREW_PATH/include" >> $GITHUB_ENV
+        echo "C_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CPLUS_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CFLAGS=-I$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I$BREW_PATH/opt/libmagic/include -I$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$BREW_PATH/opt/libmagic/lib:$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
+        echo "LDFLAGS=-L$BREW_PATH/opt/libmagic/lib -L$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
+        echo "OPENSSL_ROOT_DIR=$BREW_PATH/opt/openssl" >> $GITHUB_ENV
+        echo "OPENSSL_INCLUDE_DIR=$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
+
+    - name: Initialize git submodules to get YARA
+      run: |
+        git submodule init
+        git submodule update
+
+    - name: Build YARA
+      run: |
+        YARA_DIR=$(find deps -maxdepth 1 -type d -name "yara-*" | head -n 1)
+        if [ -z "$YARA_DIR" ]; then
+          echo "Error: Could not find YARA directory in deps/yara-*"
+          ls -la deps/
+          exit 1
+        fi
+        echo "Found YARA in: $YARA_DIR"
+        cd "$YARA_DIR"
+        autoreconf -fiv
+        cd ../..
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
