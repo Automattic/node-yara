@@ -109,12 +109,20 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
+    # note that brew install path varies between arm and x64 platforms
+    # /usr/local/Cellar/libmagic/5.46/lib/libmagic.a
+    # /opt/homebrew/Cellar/libmagic/5.46/lib/libmagic.a
     - name: Set up dependencies via brew
       run: |
         set -x
         brew install autoconf automake libmagic
-        brew config
-        brew ls libmagic
+        brew ls libmagic | grep libmagic.a
+
+    # refer to the binding.gyp file to see where we expect libmagic.a to be located
+    - name: Symlink the libmagic.a file
+      run: |
+        sudo mkdir -pv /usr/local/opt/libmagic/lib/
+        sudo ln -sv $(brew ls libmagic | grep libmagic.a) /usr/local/opt/libmagic/lib/libmagic.a || true
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
