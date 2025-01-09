@@ -15,8 +15,8 @@ jobs:
         - 'lts/*'
         os:
         - 'ubuntu-22.04'
-        - 'macos-13'  # runs on x64
-        - 'macos-15'  # runs on arm
+        - 'macos-14-large'  # x64
+        - 'macos-14'        # arm
 
     runs-on: ${{ matrix.os }}
 
