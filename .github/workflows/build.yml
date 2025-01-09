@@ -159,24 +159,6 @@ jobs:
         echo "OPENSSL_ROOT_DIR=$BREW_PATH/opt/openssl" >> $GITHUB_ENV
         echo "OPENSSL_INCLUDE_DIR=$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
 
-    - name: Initialize git submodules to get YARA
-      run: |
-        git submodule init
-        git submodule update
-
-    - name: Build YARA
-      run: |
-        YARA_DIR=$(find deps -maxdepth 1 -type d -name "yara-*" | head -n 1)
-        if [ -z "$YARA_DIR" ]; then
-          echo "Error: Could not find YARA directory in deps/yara-*"
-          ls -la deps/
-          exit 1
-        fi
-        echo "Found YARA in: $YARA_DIR"
-        cd "$YARA_DIR"
-        autoreconf -fiv
-        cd ../..
-
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
       with:
