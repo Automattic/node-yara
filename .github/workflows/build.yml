@@ -95,9 +95,13 @@ jobs:
         - '18'
         - '20'
         - '22'
+        # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
+        os:
+        - 'macos-14-large'  # x64
+        - 'macos-14'        # arm
 
     # https://docs.github.com/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#choosing-github-hosted-runners
-    runs-on: macos-13
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
@@ -105,8 +109,55 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
-    - name: Setup MacOs
-      run: brew install autoconf automake libmagic
+    # note that brew install linked path varies between arm and x64 platforms
+    # /usr/local/opt/libmagic for x64
+    # /opt/homebrew/opt/libmagic for arm64
+    - name: Set architecture-specific variables
+      id: set-arch
+      run: |
+        ARCH=$(uname -m)
+        echo "Architecture: $ARCH"
+        if [ "$ARCH" = "arm64" ]; then
+          echo "brew_path=/opt/homebrew" >> $GITHUB_OUTPUT
+          echo "Running on ARM64 (Apple Silicon)"
+        else
+          echo "brew_path=/usr/local" >> $GITHUB_OUTPUT
+          echo "Running on x64 (Intel)"
+        fi
+
+    - name: Setup build env
+      run: |
+        BREW_PATH="${{ steps.set-arch.outputs.brew_path }}"
+        
+        # Install deps
+        brew install \
+          automake \
+          autoconf \
+          pkg-config \
+          libtool \
+          libmagic \
+          openssl
+
+        # Create compatibility symlinks for x64 paths when on arm64
+        if [ "$(uname -m)" = "arm64" ]; then
+          sudo mkdir -p /usr/local/opt/libmagic/{lib,include}
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.a /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.dylib /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/lib/libmagic.1.dylib /usr/local/opt/libmagic/lib/
+          sudo ln -sf /opt/homebrew/opt/libmagic/include/magic.h /usr/local/opt/libmagic/include/
+        fi
+
+        # Set up env vars
+        echo "PKG_CONFIG_PATH=$BREW_PATH/opt/libmagic/lib/pkgconfig:$BREW_PATH/opt/openssl/lib/pkgconfig" >> $GITHUB_ENV
+        echo "CPATH=$BREW_PATH/include" >> $GITHUB_ENV
+        echo "C_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CPLUS_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CFLAGS=-I$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I$BREW_PATH/opt/libmagic/include -I$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$BREW_PATH/opt/libmagic/lib:$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
+        echo "LDFLAGS=-L$BREW_PATH/opt/libmagic/lib -L$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
+        echo "OPENSSL_ROOT_DIR=$BREW_PATH/opt/openssl" >> $GITHUB_ENV
+        echo "OPENSSL_INCLUDE_DIR=$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
