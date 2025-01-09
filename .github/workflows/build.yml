@@ -109,8 +109,12 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
-    - name: Setup MacOs
-      run: brew install autoconf automake libmagic
+    - name: Set up dependencies via brew
+      run: |
+        set -x
+        brew install autoconf automake libmagic
+        brew config
+        brew ls libmagic
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
