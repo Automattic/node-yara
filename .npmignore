@@ -1,4 +1,7 @@
-build
-deps/yara-3.6.0
+.github/
+build/
+binaries/
+deps/yara-*
 node_modules
+test/
 TODO.md
