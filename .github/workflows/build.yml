@@ -70,6 +70,8 @@ jobs:
         # copy it to the repository clone
         cp /tmp/yara-v${PACKAGE_VERSION}-* ./binaries
 
+        npm publish --dry-run
+
     - name: git status
       run: |
         # see if there's a difference
