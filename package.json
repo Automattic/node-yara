@@ -7,7 +7,7 @@
     "example": "example"
   },
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.10",
+    "@mapbox/node-pre-gyp": "^2.0.0",
     "nan": "2.22.*",
     "typescript": "^5.1.3"
   },
