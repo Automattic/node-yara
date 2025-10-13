@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
         ref: ${{ github.head_ref }}
@@ -106,7 +106,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
         ref: ${{ github.head_ref }}
