@@ -1,7 +1,5 @@
 # This workflow will publish this package to npm on each release created.
-# NPM_TOKEN secret needs to be created via https://www.npmjs.com/settings/a8c/tokens/ (choose automation token) and stored in this repository.
-#
-# See https://docs.github.com/en/actions/guides/publishing-nodejs-packages#publishing-packages-to-the-npm-registry
+# See https://docs.npmjs.com/trusted-publishers#github-actions-configuration
 
 name: Publish to npm
 
@@ -9,15 +7,23 @@ on:
   release:
     types: [created]
 
+permissions:
+  id-token: write  # Required for OIDC / trusted publishing
+  contents: read
+
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "latest"
           registry-url: https://registry.npmjs.org/
+
+      # Ensure npm 11.5.1 or later is installed
+      - name: Update npm
+        run: npm install -g npm@latest && npm -v
+
       - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
