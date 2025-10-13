@@ -2,7 +2,7 @@
 ARG DEBIAN_RELEASE=buster
 
 # The "python" base image is used to get a more up-to-date Python (buster ships with Python 3.7)
-FROM python:3.9-slim-$DEBIAN_RELEASE
+FROM python:3.14-slim-$DEBIAN_RELEASE
 ARG NODEJS=22
 
 RUN apt-get update -y && \
@@ -21,7 +21,7 @@ RUN apt-get update -y && \
 #
 # we want to have repeatable builds independented from Debian updating their Node.js packages
 ENV NODE_VERSION=${NODEJS}
-ENV NVM_VERSION=0.40.1
+ENV NVM_VERSION=0.40.3
 ENV NVM_DIR /root/.nvm
 
 RUN echo ">> Installing Node.js v${NODE_VERSION} ..."
