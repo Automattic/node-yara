@@ -71,7 +71,8 @@ jobs:
         # copy it to the repository clone
         cp /tmp/yara-v${PACKAGE_VERSION}-* ./binaries
 
-        npm publish --dry-run
+        # see what will be included in the npm package
+        npm pack
 
     - name: git status
       run: |
