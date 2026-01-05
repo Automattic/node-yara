@@ -83,8 +83,8 @@ jobs:
     # and co-authored by the user that made the last commit.
     # https://github.com/marketplace/actions/git-auto-commit
     - name: Commit the changes to the binary files
-      # if: true  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
-      if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
+      if: true  # node-gyp builds are not reproducible, hence each build would create a "new" commit -> disabling for now (comment out this line if needed)
+      # if: github.event_name == 'release' && github.event.action == 'created'  # commit new binaries package on releases
       uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_message: Commit the binary package changes for Linux / Node.js ${{ matrix.node-version }}
