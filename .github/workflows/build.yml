@@ -22,10 +22,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # https://nodejs.org/en/about/previous-releases
         node-version:
-        - '18'
         - '20'
         - '22'
+        - '24'
 
     # https://docs.github.com/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#choosing-github-hosted-runners
     runs-on: ubuntu-22.04
@@ -70,7 +71,8 @@ jobs:
         # copy it to the repository clone
         cp /tmp/yara-v${PACKAGE_VERSION}-* ./binaries
 
-        npm publish --dry-run
+        # see what will be included in the npm package
+        npm pack
 
     - name: git status
       run: |
@@ -93,10 +95,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # https://nodejs.org/en/about/previous-releases
         node-version:
-        - '18'
         - '20'
         - '22'
+        - '24'
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
         os:
         - 'macos-14-large'  # x64
