@@ -16,8 +16,9 @@ jobs:
         - '22'
         - '24'
         container:
-        - 'debian:buster-slim'
         - 'debian:bullseye-slim'
+        - 'debian:bookworm-slim'
+        - 'debian:trixie-slim'
         - 'debian:unstable-slim'
 
     runs-on: 'ubuntu-22.04'  # the host system for the Action to be run, tests will be run inside the containers defined above
