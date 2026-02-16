@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v6
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.head_ref || 'master' }}
 
     # https://github.com/actions/setup-node
     - name: Install Node.js ${{ matrix.node-version }}
@@ -112,7 +112,7 @@ jobs:
     - uses: actions/checkout@v6
       # https://github.com/stefanzweifel/git-auto-commit-action#checkout-the-correct-branch
       with:
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.head_ref || 'master' }}
 
     # note that brew install linked path varies between arm and x64 platforms
     # /usr/local/opt/libmagic for x64
