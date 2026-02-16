@@ -6,7 +6,7 @@ FROM python:3.13-slim-$DEBIAN_RELEASE
 ARG NODEJS=22
 
 RUN apt-get update -y && \
-	apt-get install -y \
+	apt-get install -y --fix-missing \
 		autoconf \
 		build-essential \
 		curl \
@@ -14,7 +14,16 @@ RUN apt-get update -y && \
 		libssl-dev \
 		libtool \
 		pkg-config \
-		time
+		time \
+	|| (apt-get update -y && apt-get install -y --fix-missing \
+		autoconf \
+		build-essential \
+		curl \
+		libmagic-dev \
+		libssl-dev \
+		libtool \
+		pkg-config \
+		time)
 
 # install Node.js via nvm
 # https://github.com/nvm-sh/nvm#install--update-script
@@ -22,7 +31,7 @@ RUN apt-get update -y && \
 # we want to have repeatable builds independented from Debian updating their Node.js packages
 ENV NODE_VERSION=${NODEJS}
 ENV NVM_VERSION=0.40.3
-ENV NVM_DIR /root/.nvm
+ENV NVM_DIR=/root/.nvm
 
 RUN echo ">> Installing Node.js v${NODE_VERSION} ..."
 
@@ -45,7 +54,7 @@ RUN node -v && \
     env
 
 WORKDIR /opt/a8c/node-yara
-ENV HOME /opt/a8c/node-yara
+ENV HOME=/opt/a8c/node-yara
 
 # leverage the build cache by copying only the dependencies definition
 COPY package.json .
