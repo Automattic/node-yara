@@ -1,8 +1,8 @@
-# This container is used to build binaries for Debian 11 (aka bullseye)
-ARG DEBIAN_RELEASE=bullseye
+# This container is used to build binaries for Debian 13 (aka trixie)
+ARG DEBIAN_RELEASE=trixie
 
 # The "python" base image is used to get a more up-to-date Python (buster ships with Python 3.7)
-FROM python:3.13-slim-$DEBIAN_RELEASE
+FROM python:3.14-slim-$DEBIAN_RELEASE
 ARG NODEJS=22
 
 RUN apt-get update -y && \
