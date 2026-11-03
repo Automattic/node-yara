@@ -19,6 +19,8 @@ jobs:
   # We need to use the node-yara binary on older Debian machines
   # hence we're using the container to build it
   build-debian:
+    # keep the job name stable, it's referenced by the branch protection required checks
+    name: build-debian (${{ matrix.node-version }})
     strategy:
       fail-fast: false
       matrix:
