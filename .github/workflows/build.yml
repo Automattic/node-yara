@@ -16,17 +16,23 @@ permissions:
   contents: write
 
 jobs:
-  # We need to use the node-yara binary on Debian 10.x machines
+  # We need to use the node-yara binary on older Debian machines
   # hence we're using the container to build it
   build-debian:
     strategy:
       fail-fast: false
       matrix:
         # https://nodejs.org/en/about/previous-releases
-        node-version:
-        - '20'
-        - '22'
-        - '24'
+        # Node.js 26+ headers need GCC 11+, which bullseye doesn't have, so those are built on trixie
+        include:
+        - node-version: '20'
+          debian-release: 'bullseye'
+        - node-version: '22'
+          debian-release: 'bullseye'
+        - node-version: '24'
+          debian-release: 'bullseye'
+        - node-version: '26'
+          debian-release: 'trixie'
 
     # https://docs.github.com/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#choosing-github-hosted-runners
     runs-on: ubuntu-22.04
@@ -58,7 +64,7 @@ jobs:
         echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
 
         # build inside the container (pass the required Node.js version there) and copy the package to the host
-        docker build --build-arg NODEJS=${{ matrix.node-version }} -t yara/debian .
+        docker build --build-arg NODEJS=${{ matrix.node-version }} --build-arg DEBIAN_RELEASE=${{ matrix.debian-release }} -t yara/debian .
         docker images
 
         # e.g. yara-v2.5.0-linux-x64-node-v93.tar.gz
@@ -100,6 +106,7 @@ jobs:
         - '20'
         - '22'
         - '24'
+        - '26'
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
         os:
         - 'macos-14-large'  # x64
