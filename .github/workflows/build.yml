@@ -25,19 +25,14 @@ jobs:
       fail-fast: false
       matrix:
         # https://nodejs.org/en/about/previous-releases
-        # Node.js 26+ headers need GCC 11+, which bullseye doesn't have, so those are built on trixie
         include:
-        - node-version: '20'
-          debian-release: 'bullseye'
-        - node-version: '22'
-          debian-release: 'bullseye'
         - node-version: '24'
-          debian-release: 'bullseye'
+          debian-release: 'trixie'
         - node-version: '26'
           debian-release: 'trixie'
 
     # https://docs.github.com/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#choosing-github-hosted-runners
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v6
@@ -63,7 +58,7 @@ jobs:
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
 
-        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) and Debian ${{ matrix.debian-release }} ..."
 
         # build inside the container (pass the required Node.js version there) and copy the package to the host
         docker build --build-arg NODEJS=${{ matrix.node-version }} --build-arg DEBIAN_RELEASE=${{ matrix.debian-release }} -t yara/debian .
@@ -105,8 +100,6 @@ jobs:
       matrix:
         # https://nodejs.org/en/about/previous-releases
         node-version:
-        - '20'
-        - '22'
         - '24'
         - '26'
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
@@ -188,7 +181,7 @@ jobs:
 
         # what's the Node.js version?
         export ABI=$(node --eval 'console.log(process.versions.modules)')
-        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) ..."
+        echo "::notice::Building binary for node-yara package v${PACKAGE_VERSION} for Node.js $(node -v) (ABI ${ABI}) for MacOS ${{ matrix.os }} ..."
 
         npm install --ignore-scripts
         time -p npx node-pre-gyp configure rebuild

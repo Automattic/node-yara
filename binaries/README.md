@@ -37,6 +37,11 @@ found 0 vulnerabilities
 
 ## Node.js ABI versions
 
+* Node.js 24.x - `v137`
+* Node.js 26.x - `v147`
+
+## No longer provided
+
 * Node.js 16.x - `v93`
 * Node.js 18.x - `v108`
 * Node.js 20.x - `v115`
