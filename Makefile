@@ -11,7 +11,7 @@ CFLAGS  += -I/usr/local/include
 LDFLAGS += -L/usr/local/lib
 endif
 
-YARA?=4.2.3
+YARA?=4.5.2
 
 libyara: yara
 
