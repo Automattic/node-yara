@@ -1,6 +1,6 @@
 ## Overview
 
-This is a Node.js native addon that provides YARA bindings for Node.js. [YARA](https://virustotal.github.io/yara/) is a pattern matching tool used primarily for malware identification and classification. The module wraps the libyara C library (version 4.2.3) using N-API (NAN) and provides both callback and promise-based APIs for scanning files and buffers against YARA rules.
+This is a Node.js native addon that provides YARA bindings for Node.js. [YARA](https://virustotal.github.io/yara/) is a pattern matching tool used primarily for malware identification and classification. The module wraps the libyara C library using N-API (NAN) and provides both callback and promise-based APIs for scanning files and buffers against YARA rules.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ This is a Node.js native addon that provides YARA bindings for Node.js. [YARA](h
 
 The module uses a complex build process that statically compiles libyara:
 
-1. **Makefile**: Downloads YARA source (v4.2.3 by default), builds libyara with crypto and magic support, installs to `build/yara/`
+1. **Makefile**: Downloads YARA source, builds libyara with crypto and magic support, installs to `build/yara/`
 2. **binding.gyp**: node-gyp configuration that:
    - Triggers `make libyara` before building the addon
    - Copies `libmagic.a` from system to `build/`
@@ -123,7 +123,7 @@ Test patterns:
 **Node.js versions**: 20, 22, 24 (see `.nvmrc` for development version)
 
 **Dependencies**:
-- libyara 4.2.3 (statically linked)
+- libyara (statically linked)
 - libmagic (statically linked)
 - libssl (for crypto support)
 
