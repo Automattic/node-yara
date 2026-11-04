@@ -143,7 +143,7 @@ jobs:
           pkg-config \
           libtool \
           libmagic \
-          openssl
+          openssl@3
 
         # Create compatibility symlinks for x64 paths when on arm64
         if [ "$(uname -m)" = "arm64" ]; then
@@ -155,16 +155,16 @@ jobs:
         fi
 
         # Set up env vars
-        echo "PKG_CONFIG_PATH=$BREW_PATH/opt/libmagic/lib/pkgconfig:$BREW_PATH/opt/openssl/lib/pkgconfig" >> $GITHUB_ENV
+        echo "PKG_CONFIG_PATH=$BREW_PATH/opt/libmagic/lib/pkgconfig:$BREW_PATH/opt/openssl@3/lib/pkgconfig" >> $GITHUB_ENV
         echo "CPATH=$BREW_PATH/include" >> $GITHUB_ENV
         echo "C_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
         echo "CPLUS_INCLUDE_PATH=$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
-        echo "CFLAGS=-I$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
-        echo "CPPFLAGS=-I$BREW_PATH/opt/libmagic/include -I$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
-        echo "LIBRARY_PATH=$BREW_PATH/opt/libmagic/lib:$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
-        echo "LDFLAGS=-L$BREW_PATH/opt/libmagic/lib -L$BREW_PATH/opt/openssl/lib" >> $GITHUB_ENV
-        echo "OPENSSL_ROOT_DIR=$BREW_PATH/opt/openssl" >> $GITHUB_ENV
-        echo "OPENSSL_INCLUDE_DIR=$BREW_PATH/opt/openssl/include" >> $GITHUB_ENV
+        echo "CFLAGS=-I$BREW_PATH/opt/openssl@3/include -I$BREW_PATH/opt/libmagic/include" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I$BREW_PATH/opt/libmagic/include -I$BREW_PATH/opt/openssl@3/include" >> $GITHUB_ENV
+        echo "LIBRARY_PATH=$BREW_PATH/opt/libmagic/lib:$BREW_PATH/opt/openssl@3/lib" >> $GITHUB_ENV
+        echo "LDFLAGS=-L$BREW_PATH/opt/libmagic/lib -L$BREW_PATH/opt/openssl@3/lib" >> $GITHUB_ENV
+        echo "OPENSSL_ROOT_DIR=$BREW_PATH/opt/openssl@3" >> $GITHUB_ENV
+        echo "OPENSSL_INCLUDE_DIR=$BREW_PATH/opt/openssl@3/include" >> $GITHUB_ENV
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@master
