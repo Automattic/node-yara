@@ -1,9 +1,16 @@
-# This container is used to build binaries for Debian 13 (aka trixie)
-ARG DEBIAN_RELEASE=trixie
+# This container is used to build binaries for Debian 11 (aka bullseye) by default.
+# Node.js 26+ needs a newer compiler, so pass --build-arg DEBIAN_RELEASE=trixie for those.
+ARG DEBIAN_RELEASE=bullseye
 
-# The "python" base image is used to get a more up-to-date Python (buster ships with Python 3.7)
-FROM python:3.14-slim-$DEBIAN_RELEASE
+# The "python" base image is used to get a more up-to-date Python than Debian ships
+FROM python:3.15-slim-$DEBIAN_RELEASE
+ARG DEBIAN_RELEASE
 ARG NODEJS=22
+
+# bullseye-security packages have moved to archive.debian.org now that bullseye LTS has ended
+RUN if [ "$DEBIAN_RELEASE" = "bullseye" ]; then \
+		sed -i 's#deb.debian.org/debian-security#archive.debian.org/debian-security#' /etc/apt/sources.list; \
+	fi
 
 RUN apt-get update -y && \
 	apt-get install -y --fix-missing \
@@ -75,6 +82,12 @@ RUN time -p npx node-pre-gyp configure rebuild && \
 RUN ldd build/Release/yara.node
 
 # prepare a tar.gz package and copy it to the binaries/ directory
-RUN npx node-pre-gyp package && \
+#
+# node-gyp hardlinks yara.node into obj.target/, which makes tar 7.5.22 fail with
+# "zlib: stream error" (https://github.com/isaacs/node-tar/issues/460), so break the link first
+RUN if [ -f build/Release/obj.target/yara.node ]; then \
+		cp --remove-destination build/Release/obj.target/yara.node build/Release/yara.node; \
+	fi && \
+	npx node-pre-gyp package && \
 	cp build/stage/Automattic/node-yara/raw/master/binaries/yara-*.tar.gz ./binaries && \
 	ls -lh ./binaries
