@@ -1,11 +1,10 @@
-# This container is used to build binaries for Debian 11 (aka bullseye) by default.
-# Node.js 26+ needs a newer compiler, so pass --build-arg DEBIAN_RELEASE=trixie for those.
-ARG DEBIAN_RELEASE=bullseye
+# This container is used to build binaries for Debian 13 (aka trixie) by default.
+ARG DEBIAN_RELEASE=trixie
 
 # The "python" base image is used to get a more up-to-date Python than Debian ships
 FROM python:3.15-slim-$DEBIAN_RELEASE
 ARG DEBIAN_RELEASE
-ARG NODEJS=22
+ARG NODEJS=24
 
 # bullseye-security packages have moved to archive.debian.org now that bullseye LTS has ended
 RUN if [ "$DEBIAN_RELEASE" = "bullseye" ]; then \
