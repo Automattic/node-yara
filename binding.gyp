@@ -16,7 +16,7 @@
         }],
         ['OS == "mac"', {
           "copies": [{
-            "files": [ "/usr/local/opt/libmagic/lib/libmagic.a" ],
+            "files": [ "<!(brew --prefix libmagic)/lib/libmagic.a" ],
             "destination": "build/"
           }],
         }],
