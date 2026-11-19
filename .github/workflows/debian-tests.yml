@@ -30,7 +30,7 @@ jobs:
 
     - name: Use Node.js ${{ matrix.node-version }}
       run: |
-        apt install -y curl
+        apt-get update && apt-get install -y curl
         set -x
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
         nvm --version
