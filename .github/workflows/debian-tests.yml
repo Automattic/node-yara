@@ -31,8 +31,12 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       run: |
         apt-get update && apt-get install -y curl
+        touch ~/.profile
+
         set -x
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+
         nvm --version
         nvm install ${{ matrix.node-version }}
         nvm ls
