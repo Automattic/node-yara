@@ -31,11 +31,14 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       run: |
         apt-get update && apt-get install -y curl
-        touch ~/.profile
 
+        # https://github.com/nodesource/distributions/blob/master/DEV_README.md#debian-versions
         set -x
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-        bash -c "nvm --version && nvm install ${{ matrix.node-version }} && nvm ls && nvm use ${{ matrix.node-version }}"
+        curl -fsSL https://deb.nodesource.com/setup_${{ matrix.node-version }}.x -o nodesource_setup.sh
+        sudo -E bash nodesource_setup.sh
+        sudo apt install -y nodejs
+        which node
+        node -v
 
     - name: Print distro and Node.js version information
       run: cat /etc/os-release && node -v && npm -v
