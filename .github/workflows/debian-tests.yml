@@ -30,13 +30,14 @@ jobs:
 
     - name: Use Node.js ${{ matrix.node-version }}
       run: |
+        echo "I am $(whoami)."
         apt-get update && apt-get install -y curl
 
         # https://github.com/nodesource/distributions/blob/master/DEV_README.md#debian-versions
         set -x
         curl -fsSL https://deb.nodesource.com/setup_${{ matrix.node-version }}.x -o nodesource_setup.sh
-        sudo -E bash nodesource_setup.sh
-        sudo apt install -y nodejs
+        bash nodesource_setup.sh
+        apt install -y nodejs
         which node
         node -v
 
