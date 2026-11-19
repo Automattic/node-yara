@@ -18,8 +18,8 @@ jobs:
         - 'lts/*'
         os:
         - 'ubuntu-latest'
-        - 'macos-14-large'  # x64
-        - 'macos-14'        # arm
+        - 'macos-26-intel'  # x64
+        - 'macos-26'        # arm
 
     runs-on: ${{ matrix.os }}
 
