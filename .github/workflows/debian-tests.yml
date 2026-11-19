@@ -35,12 +35,12 @@ jobs:
 
         set -x
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-        ln -s ~/.nvm/nvm-exec /usr/bin/nvm
 
-        nvm --version
-        nvm install ${{ matrix.node-version }}
-        nvm ls
-        nvm use ${{ matrix.node-version }}
+        cd ~/.nvm
+        ./nvm-exec --version
+        ./nvm-exec install ${{ matrix.node-version }}
+        ./nvm-exec ls
+        ./nvm-exec use ${{ matrix.node-version }}
 
     - name: Print distro and Node.js version information
       run: cat /etc/os-release && node -v && npm -v
