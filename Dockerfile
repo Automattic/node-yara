@@ -1,4 +1,5 @@
 # This container is used to build binaries for Debian 13 (aka trixie) by default.
+# CI passes DEBIAN_RELEASE=bookworm for Node.js 24 so those binaries also load on Debian 12 hosts.
 ARG DEBIAN_RELEASE=trixie
 
 # The "python" base image is used to get a more up-to-date Python than Debian ships

@@ -14,11 +14,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version:
-        - '24'
-        - '26'
-        container:
-        - 'debian:trixie-slim'
+        # Node.js 24 binaries must keep loading on bookworm (Debian 12); Node.js 26 only supports trixie
+        include:
+        - node-version: '24'
+          container: 'debian:bookworm-slim'
+        - node-version: '24'
+          container: 'debian:trixie-slim'
+        - node-version: '26'
+          container: 'debian:trixie-slim'
 
     runs-on: ubuntu-latest
 
@@ -46,6 +49,16 @@ jobs:
 
     - name: Install the package
       run: npm install
+
+    # npm install downloads the binary from master, so on a pull request it would test the old binary
+    # rather than the one being changed; test the binary committed in this checkout instead
+    - name: Use the binary from this checkout
+      run: |
+        set -x
+        BINARY=binaries/yara-v$(node -p 'require("./package.json").version')-linux-x64-node-v$(node -p 'process.versions.modules').tar.gz
+        ls -lh "$BINARY"
+        rm -rf build/Release && mkdir -p build
+        tar -xzf "$BINARY" -C build
 
     - name: Run the tests
       run: npm test

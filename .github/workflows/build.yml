@@ -25,9 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         # https://nodejs.org/en/about/previous-releases
+        # Node.js 24 binaries are built on bookworm so they also load on hosts still running Debian 12
+        # (glibc is backwards compatible, so they work on trixie as well); Node.js 26 requires trixie
         include:
         - node-version: '24'
-          debian-release: 'trixie'
+          debian-release: 'bookworm'
         - node-version: '26'
           debian-release: 'trixie'
 
